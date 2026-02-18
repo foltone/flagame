@@ -168,12 +168,22 @@ function bindEvents() {
   $('btn-validate').addEventListener('click', validateInputAnswer);
   $('btn-skip').addEventListener('click', skipInputQuestion);
 
+  // ─ Quitter la partie en cours ─
+  $('btn-quit-qcm').addEventListener('click', quitGame);
+  $('btn-quit-input').addEventListener('click', quitGame);
+
   // ─ Fin ─
   $('btn-replay').addEventListener('click', () => startGame());
   $('btn-home').addEventListener('click', () => {
     clearTimer();
     showScreen('home');
   });
+}
+
+/** Quitte la partie en cours et revient à l'accueil */
+function quitGame() {
+  clearTimer();
+  showScreen('home');
 }
 
 /** Initialise la logique de sélection des chips */
@@ -238,12 +248,21 @@ function startTimer(timerEl, barEl, onTimeout) {
 
   state.timeLeft = state.timePerQ;
   timerEl.textContent = state.timeLeft + 's';
+
+  // Reset la barre à 100% immédiatement (sans transition)
+  barEl.style.transition = 'none';
   barEl.style.width = '100%';
+
+  // Forcer le reflow pour que le navigateur applique le 100% d'abord
+  void barEl.offsetWidth;
+
+  // Lancer la transition fluide vers 0% sur toute la durée
+  barEl.style.transition = `width ${state.timePerQ}s linear`;
+  barEl.style.width = '0%';
 
   state.timerId = setInterval(() => {
     state.timeLeft--;
-    timerEl.textContent = state.timeLeft + 's';
-    barEl.style.width = ((state.timeLeft / state.timePerQ) * 100) + '%';
+    timerEl.textContent = Math.max(state.timeLeft, 0) + 's';
 
     if (state.timeLeft <= 0) {
       clearTimer();
