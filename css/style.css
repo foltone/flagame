@@ -290,13 +290,17 @@ body {
    ÉCRAN DE JEU
    ============================================================ */
 
+.game-container {
+  position: relative;
+}
+
 /* HUD */
 .game-hud {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: .4rem;
-  gap: .5rem;
+  gap: .6rem;
 }
 .hud-item {
   font-weight: 700;
@@ -306,12 +310,44 @@ body {
 .hud-score {
   color: var(--primary);
   font-size: 1.05rem;
+  flex: 1;
+  text-align: center;
 }
 .hud-timer {
   color: var(--warning);
   font-variant-numeric: tabular-nums;
   min-width: 3ch;
   text-align: right;
+}
+
+/* Bouton quitter (dans le HUD) */
+.btn-quit {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--border);
+  border-radius: 50%;
+  background: var(--bg-card);
+  color: var(--danger);
+  font-size: .95rem;
+  font-weight: 800;
+  font-family: var(--font);
+  cursor: pointer;
+  transition: all var(--transition);
+  -webkit-tap-highlight-color: transparent;
+  line-height: 1;
+  flex-shrink: 0;
+}
+.btn-quit:hover {
+  background: var(--danger);
+  color: #fff;
+  border-color: var(--danger);
+  transform: rotate(90deg);
+}
+.btn-quit:active {
+  transform: scale(.9) rotate(90deg);
 }
 
 /* Timer bar */
