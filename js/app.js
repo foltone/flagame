@@ -291,12 +291,12 @@ function nextQuestionQCM() {
 
   // Afficher le drapeau
   const flagImg = $('qcm-flag');
-  flagImg.src = flagPath(key);
-  flagImg.alt = 'Drapeau mystère';
-  // Re-trigger animation
-  flagImg.classList.remove('flag-img');
-  void flagImg.offsetWidth;
-  flagImg.classList.add('flag-img');
+  flagImg.classList.remove('show');
+  setTimeout(() => {
+    flagImg.src = flagPath(key);
+    flagImg.alt = 'Drapeau mystère';
+    flagImg.classList.add('show');
+  }, 100);
 
   // Générer les 4 options (1 correcte + 3 aléatoires)
   const wrongKeys = FLAG_KEYS.filter(k => k !== key);
@@ -394,11 +394,12 @@ function nextQuestionInput() {
 
   // Drapeau
   const flagImg = $('input-flag');
-  flagImg.src = flagPath(key);
-  flagImg.alt = 'Drapeau mystère';
-  flagImg.classList.remove('flag-img');
-  void flagImg.offsetWidth;
-  flagImg.classList.add('flag-img');
+  flagImg.classList.remove('show');
+  setTimeout(() => {
+    flagImg.src = flagPath(key);
+    flagImg.alt = 'Drapeau mystère';
+    flagImg.classList.add('show');
+  }, 100);
 
   // Reset input
   const input = $('input-answer');

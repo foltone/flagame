@@ -96,9 +96,11 @@ body {
   transition: all var(--transition);
   -webkit-tap-highlight-color: transparent;
 }
-.theme-toggle:hover {
-  border-color: var(--primary);
-  transform: rotate(20deg) scale(1.1);
+@media (hover: hover) {
+  .theme-toggle:hover {
+    border-color: var(--primary);
+    transform: rotate(20deg) scale(1.1);
+  }
 }
 
 /* ---------- Écrans (sections) ---------- */
@@ -167,10 +169,12 @@ body {
   color: var(--text);
   font-family: var(--font);
 }
-.mode-card:hover, .mode-card:focus-visible {
-  background: var(--bg-card-hover);
-  border-color: var(--primary);
-  transform: translateY(-3px);
+@media (hover: hover) {
+  .mode-card:hover, .mode-card:focus-visible {
+    background: var(--bg-card-hover);
+    border-color: var(--primary);
+    transform: translateY(-3px);
+  }
 }
 
 .mode-icon {
@@ -226,8 +230,10 @@ body {
   cursor: pointer;
   transition: all var(--transition);
 }
-.chip:hover {
-  border-color: var(--primary);
+@media (hover: hover) {
+  .chip:hover {
+    border-color: var(--primary);
+  }
 }
 .chip.selected {
   background: var(--primary);
@@ -247,8 +253,10 @@ body {
   cursor: pointer;
   transition: color var(--transition);
 }
-.btn-back:hover {
-  color: var(--text);
+@media (hover: hover) {
+  .btn-back:hover {
+    color: var(--text);
+  }
 }
 
 /* ============================================================
@@ -270,9 +278,11 @@ body {
   color: #fff;
   margin-top: 1rem;
 }
-.btn-primary:hover {
-  background: var(--primary-hover);
-  transform: scale(1.04);
+@media (hover: hover) {
+  .btn-primary:hover {
+    background: var(--primary-hover);
+    transform: scale(1.03);
+  }
 }
 
 .btn-secondary {
@@ -281,9 +291,11 @@ body {
   border: 2px solid var(--border);
   margin-top: 1rem;
 }
-.btn-secondary:hover {
-  border-color: var(--primary);
-  background: var(--bg-card-hover);
+@media (hover: hover) {
+  .btn-secondary:hover {
+    border-color: var(--primary);
+    background: var(--bg-card-hover);
+  }
 }
 
 /* ============================================================
@@ -340,11 +352,13 @@ body {
   line-height: 1;
   flex-shrink: 0;
 }
-.btn-quit:hover {
-  background: var(--danger);
-  color: #fff;
-  border-color: var(--danger);
-  transform: rotate(90deg);
+@media (hover: hover) {
+  .btn-quit:hover {
+    background: var(--danger);
+    color: #fff;
+    border-color: var(--danger);
+    transform: rotate(90deg);
+  }
 }
 .btn-quit:active {
   transform: scale(.9) rotate(90deg);
@@ -385,9 +399,16 @@ body {
   max-height: 200px;
   object-fit: contain;
   border-radius: var(--radius-sm);
-  animation: flagIn .4s ease;
   filter: drop-shadow(0 4px 16px var(--shadow-flag));
+  opacity: 0;
+  transform: scale(.85);
+  transition: all .4s ease;
 }
+.flag-img.show {
+  opacity: 1;
+  transform: scale(1);
+}
+
 @keyframes flagIn {
   from { opacity: 0; transform: scale(.85); }
   to   { opacity: 1; transform: scale(1); }
@@ -414,10 +435,12 @@ body {
   word-break: break-word;
   min-height: 56px;
 }
-.option-btn:hover:not(.disabled) {
-  border-color: var(--primary);
-  background: var(--bg-card-hover);
-  transform: scale(1.03);
+@media (hover: hover) {
+  .option-btn:hover:not(.disabled) {
+    border-color: var(--primary);
+    background: var(--bg-card-hover);
+    transform: scale(1.03);
+  }
 }
 
 .option-btn.correct {
