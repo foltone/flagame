@@ -72,44 +72,105 @@ def get_image_url(img_tag) -> str:
 
 def search_flag_in_page(country_name: str) -> str:
     """
-    Recherche l'image du drapeau pour un pays donné en cherchant sur la page
-    du pays ou en utilisant les conventions de nommage de Wikimedia.
+    Recherche l'image du drapeau pour un pays donné en utilisant les conventions 
+    de nommage spécifiques aux drapeaux sur Wikimedia Commons.
     
     Retourne l'URL de l'image du drapeau ou une chaîne vide si non trouvé.
     """
-    # Essayer de trouver l'URL du drapeau via l'API Wikipedia
     try:
-        # Chercher la page du pays
-        search_url = f"https://fr.wikipedia.org/api/rest_v1/page/summary/{country_name.replace(' ', '_')}"
-        response = requests.get(search_url, headers=HEADERS, timeout=10)
+        # Normaliser le nom du pays pour les URLs
+        country_normalized = country_name.replace(' ', '_')
         
-        if response.status_code == 200:
-            data = response.json()
-            if "thumbnail" in data and data["thumbnail"]:
-                return data["thumbnail"]["source"]
-        
-        # Si pas d'image dans le summary, essayer avec les conventions de nommage communes
+        # Variantes communes de noms de drapeaux sur Wikimedia Commons
         common_flag_names = [
-            f"Flag_of_{country_name.replace(' ', '_')}.svg",
-            f"Flag_of_{country_name.replace(' ', '_')}.png",
-            f"Flag_of_the_{country_name.replace(' ', '_')}.svg",
-            f"Drapeau_de_{country_name.replace(' ', '_')}.svg",
-            f"{country_name.replace(' ', '_')}_flag.svg"
+            f"Flag_of_{country_normalized}.svg",
+            f"Flag_of_{country_normalized}.png", 
+            f"Flag_of_the_{country_normalized}.svg",
+            f"Flag_of_the_{country_normalized}.png"
         ]
         
+        # Variantes spéciales pour certains pays
+        special_cases = {
+            "République tchèque": ["Flag_of_the_Czech_Republic.svg", "Flag_of_Czech_Republic.svg"],
+            "Birmanie (Myanmar)": ["Flag_of_Myanmar.svg", "Flag_of_Burma.svg"],
+            "Chypre du Nord": ["Flag_of_Northern_Cyprus.svg", "Flag_of_the_Turkish_Republic_of_Northern_Cyprus.svg"],
+            "Taïwan": ["Flag_of_Taiwan.svg", "Flag_of_the_Republic_of_China.svg"],
+            "Transnistrie": ["Flag_of_Transnistria.svg", "Flag_of_Pridnestrovie.svg"],
+            "Abkhazie": ["Flag_of_Abkhazia.svg"],
+            "Haut-Karabagh": ["Flag_of_Nagorno-Karabakh.svg", "Flag_of_Artsakh.svg"],
+            "Ossétie du Sud": ["Flag_of_South_Ossetia.svg"],
+            "République arabe sahraouie démocratique": ["Flag_of_the_Sahrawi_Arab_Democratic_Republic.svg"],
+            "Somaliland": ["Flag_of_Somaliland.svg"],
+            "Macao": ["Flag_of_Macau.svg"],
+            "Hong Kong": ["Flag_of_Hong_Kong.svg"],
+            "Polynésie française": ["Flag_of_French_Polynesia.svg"],
+            "Porto Rico": ["Flag_of_Puerto_Rico.svg"]
+        }
+        
+        if country_name in special_cases:
+            common_flag_names = special_cases[country_name]
+        
+        # Tester chaque variante
         for flag_name in common_flag_names:
-            # Construire l'URL Wikimedia Commons
-            filename_encoded = flag_name.replace(" ", "_")
-            commons_url = f"https://commons.wikimedia.org/wiki/File:{filename_encoded}"
+            # Construire l'URL directe du fichier sur Wikimedia Commons
+            # Format: https://commons.wikimedia.org/wiki/File:Flag_of_X.svg
+            commons_url = f"https://commons.wikimedia.org/wiki/File:{flag_name}"
             
             try:
                 page_response = requests.get(commons_url, headers=HEADERS, timeout=10)
                 if page_response.status_code == 200:
                     page_soup = BeautifulSoup(page_response.text, "html.parser")
-                    # Trouver le lien vers le fichier original
-                    original_file_link = page_soup.find("a", string="Fichier d'origine") or page_soup.find("a", string="Original file")
-                    if original_file_link:
-                        return original_file_link["href"]
+                    
+                    # Chercher le lien vers le fichier original (plusieurs façons possibles)
+                    original_file_link = None
+                    
+                    # Méthode 1: Rechercher "Original file" ou "Fichier d'origine"
+                    for link_text in ["Original file", "Fichier d'origine", "Full resolution"]:
+                        original_file_link = page_soup.find("a", string=link_text)
+                        if original_file_link:
+                            break
+                    
+                    # Méthode 2: Chercher dans les liens d'images
+                    if not original_file_link:
+                        # Chercher les liens vers upload.wikimedia.org qui contiennent le nom du fichier
+                        for link in page_soup.find_all("a", href=True):
+                            href = link["href"]
+                            if ("upload.wikimedia.org" in href and 
+                                flag_name.replace('.svg', '').replace('.png', '') in href and
+                                not "/thumb/" in href):
+                                return href
+                    
+                    # Méthode 3: Parser la page pour trouver l'URL de l'image directement
+                    if not original_file_link:
+                        # Chercher les balises img qui pointent vers le vrai fichier
+                        for img in page_soup.find_all("img"):
+                            src = img.get("src", "")
+                            if ("upload.wikimedia.org" in src and 
+                                flag_name.replace('.svg', '').replace('.png', '') in src and 
+                                "/thumb/" not in src):
+                                return src
+                    
+                    if original_file_link and original_file_link.get("href"):
+                        file_url = original_file_link["href"]
+                        if file_url.startswith("//"):
+                            file_url = "https:" + file_url
+                        elif file_url.startswith("/"):
+                            file_url = "https://commons.wikimedia.org" + file_url
+                        return file_url
+                        
+            except Exception as e:
+                print(f"    Erreur lors de la vérification de {flag_name}: {e}")
+                continue
+        
+        # Si aucune variante n'a fonctionné, construire l'URL directement
+        # Format direct Wikimedia: https://upload.wikimedia.org/wikipedia/commons/...
+        for flag_name in common_flag_names[:2]:  # Tester seulement les 2 premières variantes
+            try:
+                # Essayer de deviner l'URL directe (cette méthode est moins fiable)
+                direct_url = f"https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/{flag_name}/320px-{flag_name}"
+                response = requests.head(direct_url, headers=HEADERS, timeout=5)
+                if response.status_code == 200:
+                    return direct_url.replace("/thumb", "").replace("/320px-" + flag_name, "")
             except:
                 continue
                 
