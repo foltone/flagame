@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="900" height="600" version="1.1" viewBox="0 0 72 48" xmlns="http://www.w3.org/2000/svg">
+ <title>Flag of Tanzania</title>
+ <path d="m0 48v-48h72z" fill="#1eb53a"/>
+ <path d="m72 0v48h-72z" fill="#00a3dd"/>
+ <path d="m55 0-55 37v11h17l55-37v-11z" fill="#fcd116"/>
+ <path d="m60 0-60 40v7.8h12l60-40v-7.8z"/>
+</svg>

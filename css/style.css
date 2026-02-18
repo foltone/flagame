@@ -1,0 +1,656 @@
+/* ============================================================
+   FlaGame – Feuille de style principale
+   ============================================================ */
+
+/* ---------- Reset & Variables ---------- */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  /* Typographie */
+  --font: 'Nunito', system-ui, sans-serif;
+
+  /* Dimensions */
+  --radius: 14px;
+  --radius-sm: 8px;
+  --max-w: 700px;
+  --transition: .25s ease;
+
+  /* Couleurs fixes */
+  --primary: #4f8cff;
+  --primary-hover: #6ea1ff;
+  --success: #34d399;
+  --danger: #f87171;
+  --warning: #fbbf24;
+}
+
+/* ─── Thème sombre (défaut) ─── */
+body.dark {
+  --bg: #0f1729;
+  --bg-card: #1a2540;
+  --bg-card-hover: #243156;
+  --text: #e8ecf4;
+  --text-muted: #8a99b4;
+  --border: #2d3f5e;
+  --shadow-flag: rgba(0,0,0,.35);
+  --input-correct-bg: rgba(52, 211, 153, .12);
+  --input-wrong-bg: rgba(248, 113, 113, .12);
+}
+
+/* ─── Thème clair ─── */
+body.light {
+  --bg: #f0f4f8;
+  --bg-card: #ffffff;
+  --bg-card-hover: #e8edf4;
+  --text: #1a202c;
+  --text-muted: #5a6a85;
+  --border: #d2dae6;
+  --shadow-flag: rgba(0,0,0,.12);
+  --input-correct-bg: rgba(52, 211, 153, .15);
+  --input-wrong-bg: rgba(248, 113, 113, .15);
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  padding-top: 3.5rem;
+  overflow-x: hidden;
+  transition: background var(--transition), color var(--transition);
+}
+
+/* ---------- Barre supérieure ---------- */
+.top-bar {
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 100;
+  padding: .7rem 1rem;
+}
+
+.theme-toggle {
+  background: var(--bg-card);
+  border: 2px solid var(--border);
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 1.25rem;
+  transition: all var(--transition);
+  -webkit-tap-highlight-color: transparent;
+}
+.theme-toggle:hover {
+  border-color: var(--primary);
+  transform: rotate(20deg) scale(1.1);
+}
+
+/* ---------- Écrans (sections) ---------- */
+.screen {
+  display: none;
+  width: 100%;
+  max-width: var(--max-w);
+  animation: fadeIn .35s ease;
+}
+.screen.active {
+  display: block;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ---------- Container ---------- */
+.container {
+  width: 100%;
+}
+
+/* ============================================================
+   ÉCRAN D'ACCUEIL
+   ============================================================ */
+.home-container {
+  text-align: center;
+}
+
+.logo {
+  font-size: clamp(2.4rem, 7vw, 3.6rem);
+  font-weight: 900;
+  background: linear-gradient(135deg, var(--primary) 0%, #a78bfa 50%, var(--warning) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: .15em;
+  letter-spacing: -1px;
+}
+
+.subtitle {
+  color: var(--text-muted);
+  font-size: 1.15rem;
+  margin-bottom: 2.5rem;
+}
+
+/* Cartes de mode */
+.mode-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.mode-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .4rem;
+  background: var(--bg-card);
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.6rem 1rem;
+  cursor: pointer;
+  transition: background var(--transition), border-color var(--transition), transform var(--transition);
+  color: var(--text);
+  font-family: var(--font);
+}
+.mode-card:hover, .mode-card:focus-visible {
+  background: var(--bg-card-hover);
+  border-color: var(--primary);
+  transform: translateY(-3px);
+}
+
+.mode-icon {
+  font-size: 2.2rem;
+}
+.mode-title {
+  font-size: 1.3rem;
+  font-weight: 800;
+}
+.mode-desc {
+  font-size: .88rem;
+  color: var(--text-muted);
+}
+
+/* ============================================================
+   ÉCRAN CONFIG
+   ============================================================ */
+.config-container {
+  text-align: center;
+}
+.config-container h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1.8rem;
+}
+
+.config-group {
+  margin-bottom: 1.6rem;
+}
+.config-group label {
+  display: block;
+  font-weight: 700;
+  margin-bottom: .6rem;
+  color: var(--text-muted);
+  font-size: .95rem;
+}
+
+.chip-row {
+  display: flex;
+  gap: .5rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.chip {
+  font-family: var(--font);
+  font-weight: 700;
+  font-size: .95rem;
+  padding: .55rem 1.2rem;
+  border-radius: 50px;
+  border: 2px solid var(--border);
+  background: var(--bg-card);
+  color: var(--text);
+  cursor: pointer;
+  transition: all var(--transition);
+}
+.chip:hover {
+  border-color: var(--primary);
+}
+.chip.selected {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #fff;
+}
+
+.btn-back {
+  position: absolute;
+  top: 1.2rem;
+  left: 1.2rem;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-family: var(--font);
+  font-size: .95rem;
+  cursor: pointer;
+  transition: color var(--transition);
+}
+.btn-back:hover {
+  color: var(--text);
+}
+
+/* ============================================================
+   BOUTONS GLOBAUX
+   ============================================================ */
+.btn-primary, .btn-secondary {
+  font-family: var(--font);
+  font-weight: 700;
+  font-size: 1.05rem;
+  border: none;
+  border-radius: 50px;
+  padding: .75rem 2rem;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: #fff;
+  margin-top: 1rem;
+}
+.btn-primary:hover {
+  background: var(--primary-hover);
+  transform: scale(1.04);
+}
+
+.btn-secondary {
+  background: var(--bg-card);
+  color: var(--text);
+  border: 2px solid var(--border);
+  margin-top: 1rem;
+}
+.btn-secondary:hover {
+  border-color: var(--primary);
+  background: var(--bg-card-hover);
+}
+
+/* ============================================================
+   ÉCRAN DE JEU
+   ============================================================ */
+
+/* HUD */
+.game-hud {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: .4rem;
+  gap: .5rem;
+}
+.hud-item {
+  font-weight: 700;
+  font-size: .95rem;
+  color: var(--text-muted);
+}
+.hud-score {
+  color: var(--primary);
+  font-size: 1.05rem;
+}
+.hud-timer {
+  color: var(--warning);
+  font-variant-numeric: tabular-nums;
+  min-width: 3ch;
+  text-align: right;
+}
+
+/* Timer bar */
+.timer-bar-wrapper {
+  width: 100%;
+  height: 5px;
+  background: var(--bg-card);
+  border-radius: 10px;
+  margin-bottom: 1.4rem;
+  overflow: hidden;
+}
+.timer-bar {
+  height: 100%;
+  width: 100%;
+  background: linear-gradient(90deg, var(--success), var(--warning), var(--danger));
+  border-radius: 10px;
+  transition: width .3s linear;
+}
+
+/* Drapeau */
+.flag-display {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-card);
+  border-radius: var(--radius);
+  padding: 1.6rem;
+  margin-bottom: 1.4rem;
+  min-height: 180px;
+  border: 2px solid var(--border);
+}
+
+.flag-img {
+  max-width: 100%;
+  max-height: 200px;
+  object-fit: contain;
+  border-radius: var(--radius-sm);
+  animation: flagIn .4s ease;
+  filter: drop-shadow(0 4px 16px var(--shadow-flag));
+}
+@keyframes flagIn {
+  from { opacity: 0; transform: scale(.85); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+/* Options QCM */
+.options-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: .7rem;
+}
+
+.option-btn {
+  font-family: var(--font);
+  font-weight: 700;
+  font-size: 1rem;
+  padding: .9rem .8rem;
+  border-radius: var(--radius-sm);
+  border: 2px solid var(--border);
+  background: var(--bg-card);
+  color: var(--text);
+  cursor: pointer;
+  transition: all var(--transition);
+  word-break: break-word;
+  min-height: 56px;
+}
+.option-btn:hover:not(.disabled) {
+  border-color: var(--primary);
+  background: var(--bg-card-hover);
+  transform: scale(1.03);
+}
+
+.option-btn.correct {
+  background: var(--success);
+  border-color: var(--success);
+  color: #fff;
+  animation: pop .3s ease;
+}
+.option-btn.wrong {
+  background: var(--danger);
+  border-color: var(--danger);
+  color: #fff;
+  animation: shake .4s ease;
+}
+.option-btn.disabled {
+  cursor: default;
+  opacity: .65;
+}
+
+@keyframes pop {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(1.08); }
+  100% { transform: scale(1); }
+}
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20%      { transform: translateX(-6px); }
+  40%      { transform: translateX(6px); }
+  60%      { transform: translateX(-4px); }
+  80%      { transform: translateX(4px); }
+}
+
+/* Saisie libre */
+.input-area {
+  text-align: center;
+}
+
+.text-input {
+  font-family: var(--font);
+  font-size: 1.1rem;
+  font-weight: 600;
+  width: 100%;
+  padding: .85rem 1.2rem;
+  border-radius: 50px;
+  border: 2px solid var(--border);
+  background: var(--bg-card);
+  color: var(--text);
+  outline: none;
+  transition: border-color var(--transition);
+  text-align: center;
+}
+.text-input:focus {
+  border-color: var(--primary);
+}
+.text-input.input-correct {
+  border-color: var(--success);
+  background: var(--input-correct-bg);
+}
+.text-input.input-wrong {
+  border-color: var(--danger);
+  background: var(--input-wrong-bg);
+}
+
+.input-actions {
+  display: flex;
+  gap: .6rem;
+  justify-content: center;
+  margin-top: .8rem;
+}
+
+.feedback {
+  text-align: center;
+  margin-top: 1rem;
+  font-weight: 700;
+  font-size: 1.05rem;
+  min-height: 1.6em;
+  transition: opacity var(--transition);
+}
+.feedback.correct {
+  color: var(--success);
+}
+.feedback.wrong {
+  color: var(--danger);
+}
+
+/* ============================================================
+   ÉCRAN DE FIN
+   ============================================================ */
+.end-container {
+  text-align: center;
+}
+.end-container h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1.2rem;
+}
+
+.end-score-circle {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 140px;
+  height: 140px;
+  margin: 0 auto 1.2rem;
+  border-radius: 50%;
+  border: 5px solid var(--primary);
+  background: var(--bg-card);
+  animation: pop .5s ease;
+}
+#end-score-value {
+  font-size: 2.8rem;
+  font-weight: 900;
+  line-height: 1;
+  color: var(--primary);
+}
+#end-score-total {
+  font-size: 1rem;
+  color: var(--text-muted);
+}
+
+.end-message {
+  font-size: 1.15rem;
+  margin-bottom: .3rem;
+}
+.end-percent {
+  font-size: .95rem;
+  color: var(--text-muted);
+  margin-bottom: 1.6rem;
+}
+
+.end-actions {
+  display: flex;
+  gap: .8rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* ---------- Récapitulatif ---------- */
+.recap-section {
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+  text-align: left;
+}
+.recap-section h3 {
+  text-align: center;
+  margin-bottom: .8rem;
+  font-size: 1.1rem;
+  color: var(--text-muted);
+}
+
+.recap-list {
+  max-height: 300px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: .45rem;
+  padding-right: .3rem;
+}
+.recap-list::-webkit-scrollbar {
+  width: 4px;
+}
+.recap-list::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 10px;
+}
+
+.recap-item {
+  display: flex;
+  align-items: center;
+  gap: .7rem;
+  padding: .5rem .8rem;
+  background: var(--bg-card);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  font-size: .88rem;
+}
+.recap-item.recap-correct {
+  border-left: 4px solid var(--success);
+}
+.recap-item.recap-wrong {
+  border-left: 4px solid var(--danger);
+}
+.recap-item.recap-skipped {
+  border-left: 4px solid var(--warning);
+}
+
+.recap-flag {
+  width: 36px;
+  height: 24px;
+  object-fit: contain;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+.recap-text {
+  flex: 1;
+}
+.recap-text .recap-label {
+  font-weight: 700;
+}
+.recap-text .recap-detail {
+  color: var(--text-muted);
+  font-size: .82rem;
+}
+.recap-icon {
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (min-width: 500px) {
+  .mode-cards {
+    flex-direction: row;
+  }
+  .mode-card {
+    flex: 1;
+  }
+}
+
+@media (max-width: 500px) {
+  body {
+    padding-top: 3rem;
+    padding-bottom: .5rem;
+  }
+  .options-grid {
+    grid-template-columns: 1fr;
+  }
+  .option-btn {
+    min-height: 52px;
+    font-size: 1.05rem;
+    padding: 1rem .8rem;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .flag-display {
+    min-height: 130px;
+    padding: .8rem;
+  }
+  .flag-img {
+    max-height: 140px;
+  }
+  .end-score-circle {
+    width: 110px;
+    height: 110px;
+  }
+  #end-score-value {
+    font-size: 2.2rem;
+  }
+  .input-actions {
+    flex-direction: column;
+  }
+  .btn-primary, .btn-secondary {
+    width: 100%;
+    padding: .9rem 1.5rem;
+    font-size: 1.08rem;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .chip {
+    padding: .6rem 1rem;
+    font-size: .9rem;
+  }
+  .mode-card {
+    padding: 1.2rem .8rem;
+  }
+  .text-input {
+    font-size: 1.15rem;
+    padding: .9rem 1rem;
+  }
+  .game-container {
+    padding-bottom: env(safe-area-inset-bottom, 0);
+  }
+}

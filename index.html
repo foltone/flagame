@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FlaGame – Devine le drapeau !</title>
+  <link rel="stylesheet" href="css/style.css">
+  <!-- Police Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body class="dark">
+
+  <!-- ========== BARRE SUPÉRIEURE (thème toggle) ========== -->
+  <header class="top-bar">
+    <button class="theme-toggle" id="btn-theme" title="Changer de thème">
+      <span class="theme-icon" id="theme-icon">☀️</span>
+    </button>
+  </header>
+
+  <!-- ===================== ÉCRAN D'ACCUEIL ===================== -->
+  <section id="screen-home" class="screen active">
+    <div class="container home-container">
+      <h1 class="logo">FlaGame</h1>
+      <p class="subtitle">Devine le drapeau !</p>
+
+      <div class="mode-cards">
+        <!-- Carte Mode QCM -->
+        <button class="mode-card" id="btn-mode-qcm">
+          <span class="mode-icon">🅰️</span>
+          <span class="mode-title">Mode QCM</span>
+          <span class="mode-desc">4 propositions, choisis la bonne réponse</span>
+        </button>
+        <!-- Carte Mode Saisie Libre -->
+        <button class="mode-card" id="btn-mode-input">
+          <span class="mode-icon">✍️</span>
+          <span class="mode-title">Mode Saisie Libre</span>
+          <span class="mode-desc">Écris le nom du pays correspondant</span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================ ÉCRAN CONFIG QCM ================ -->
+  <section id="screen-config-qcm" class="screen">
+    <div class="container config-container">
+      <button class="btn-back" id="btn-back-qcm">← Retour</button>
+      <h2>⚙️ Configuration QCM</h2>
+
+      <div class="config-group">
+        <label>Nombre de manches</label>
+        <div class="chip-row" id="chips-rounds">
+          <button class="chip" data-value="10">10</button>
+          <button class="chip selected" data-value="20">20</button>
+          <button class="chip" data-value="30">30</button>
+          <button class="chip" data-value="50">50</button>
+          <button class="chip" data-value="197">Tous</button>
+        </div>
+      </div>
+
+      <div class="config-group">
+        <label>Temps par question (secondes)</label>
+        <div class="chip-row" id="chips-time">
+          <button class="chip" data-value="10">10s</button>
+          <button class="chip selected" data-value="20">20s</button>
+          <button class="chip" data-value="30">30s</button>
+          <button class="chip" data-value="0">∞</button>
+        </div>
+      </div>
+
+      <button class="btn-primary" id="btn-start-qcm">🚀 Lancer le jeu</button>
+    </div>
+  </section>
+
+  <!-- ================ ÉCRAN CONFIG SAISIE ================ -->
+  <section id="screen-config-input" class="screen">
+    <div class="container config-container">
+      <button class="btn-back" id="btn-back-input">← Retour</button>
+      <h2>⚙️ Configuration Saisie Libre</h2>
+
+      <div class="config-group">
+        <label>Nombre de manches</label>
+        <div class="chip-row" id="chips-rounds-input">
+          <button class="chip" data-value="10">10</button>
+          <button class="chip selected" data-value="20">20</button>
+          <button class="chip" data-value="30">30</button>
+          <button class="chip" data-value="50">50</button>
+          <button class="chip" data-value="197">Tous</button>
+        </div>
+      </div>
+
+      <div class="config-group">
+        <label>Temps par question (secondes)</label>
+        <div class="chip-row" id="chips-time-input">
+          <button class="chip" data-value="15">15s</button>
+          <button class="chip selected" data-value="30">30s</button>
+          <button class="chip" data-value="45">45s</button>
+          <button class="chip" data-value="0">∞</button>
+        </div>
+      </div>
+
+      <button class="btn-primary" id="btn-start-input">🚀 Lancer le jeu</button>
+    </div>
+  </section>
+
+  <!-- ================ ÉCRAN DE JEU QCM ================ -->
+  <section id="screen-game-qcm" class="screen">
+    <div class="container game-container">
+      <!-- Barre d'info -->
+      <div class="game-hud">
+        <span class="hud-item" id="qcm-round">1 / 20</span>
+        <span class="hud-item hud-score" id="qcm-score">Score : 0</span>
+        <span class="hud-item hud-timer" id="qcm-timer">20s</span>
+      </div>
+      <!-- Timer bar -->
+      <div class="timer-bar-wrapper">
+        <div class="timer-bar" id="qcm-timer-bar"></div>
+      </div>
+
+      <!-- Drapeau -->
+      <div class="flag-display" id="qcm-flag-container">
+        <img id="qcm-flag" src="" alt="Drapeau" class="flag-img">
+      </div>
+
+      <!-- Options -->
+      <div class="options-grid" id="qcm-options">
+        <button class="option-btn"></button>
+        <button class="option-btn"></button>
+        <button class="option-btn"></button>
+        <button class="option-btn"></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================ ÉCRAN DE JEU SAISIE LIBRE ================ -->
+  <section id="screen-game-input" class="screen">
+    <div class="container game-container">
+      <!-- Barre d'info -->
+      <div class="game-hud">
+        <span class="hud-item" id="input-round">1 / 20</span>
+        <span class="hud-item hud-score" id="input-score">Score : 0</span>
+        <span class="hud-item hud-timer" id="input-timer">30s</span>
+      </div>
+      <!-- Timer bar -->
+      <div class="timer-bar-wrapper">
+        <div class="timer-bar" id="input-timer-bar"></div>
+      </div>
+
+      <!-- Drapeau -->
+      <div class="flag-display" id="input-flag-container">
+        <img id="input-flag" src="" alt="Drapeau" class="flag-img">
+      </div>
+
+      <!-- Saisie -->
+      <div class="input-area">
+        <input type="text" id="input-answer" class="text-input" placeholder="Nom du pays…" autocomplete="off" inputmode="text" enterkeyhint="done" autofocus>
+        <div class="input-actions">
+          <button class="btn-primary" id="btn-validate">✅ Valider</button>
+          <button class="btn-secondary" id="btn-skip">⏭️ Passer</button>
+        </div>
+      </div>
+
+      <!-- Feedback -->
+      <div class="feedback" id="input-feedback"></div>
+    </div>
+  </section>
+
+  <!-- ================ ÉCRAN DE FIN ================ -->
+  <section id="screen-end" class="screen">
+    <div class="container end-container">
+      <h2 id="end-title">🏆 Partie terminée !</h2>
+      <div class="end-score-circle">
+        <span id="end-score-value">0</span>
+        <span id="end-score-total">/ 20</span>
+      </div>
+      <p id="end-message" class="end-message"></p>
+      <p id="end-percent" class="end-percent"></p>
+
+      <!-- Récap des réponses -->
+      <div class="recap-section">
+        <h3>📋 Récapitulatif</h3>
+        <div class="recap-list" id="recap-list"></div>
+      </div>
+
+      <div class="end-actions">
+        <button class="btn-primary" id="btn-replay">🔄 Rejouer</button>
+        <button class="btn-secondary" id="btn-home">🏠 Accueil</button>
+      </div>
+    </div>
+  </section>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
